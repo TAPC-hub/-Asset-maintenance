@@ -1,6 +1,3 @@
-# main.py
-# Sistema de Manutenção de Computadores - Menu Principal
-
 from computadores import carregar_computadores, salvar_computadores, cadastrar_computador, listar_computadores, atualizar_status_computador, deletar_computador
 
 from ordens import carregar_ordens, salvar_ordens, criar_ordem, listar_ordens_abertas, atualizar_status_ordem, verificar_sla_atraso
@@ -9,62 +6,55 @@ from historico import exibir_historico_completo, exibir_historico_por_computador
 
 
 def exibir_menu_principal():
-    """Exibe o menu principal do sistema."""
     print("\n" + "="*50)
-    print("      SISTEMA DE MANUTENÇÃO DE COMPUTADORES")
+    print("      COMPUTER MAINTENANCE SYSTEM")
     print("="*50)
-    print("[1] Gerenciar Computadores")
-    print("[2] Gerenciar Ordens de Serviço")
-    print("[3] Histórico e Estatísticas")
-    print("[0] Sair")
+    print("[1] Manage Computers")
+    print("[2] Manage Service Orders")
+    print("[3] History and Statistics")
+    print("[0] Exit")
     print("="*50)
 
 
 def exibir_menu_computadores():
-    """Exibe o submenu de computadores."""
-    print("\n--- GERENCIAR COMPUTADORES ---")
-    print("[1] Cadastrar computador")
-    print("[2] Listar computadores")
-    print("[3] Atualizar status")
-    print("[4] Deletar computador")
-    print("[0] Voltar")
+    print("\n--- MANAGE COMPUTERS ---")
+    print("[1] Register computer")
+    print("[2] List computers")
+    print("[3] Update status")
+    print("[4] Delete computer")
+    print("[0] Back")
 
 
 def exibir_menu_ordens():
-    """Exibe o submenu de ordens de serviço."""
-    print("\n--- GERENCIAR ORDENS DE SERVIÇO ---")
-    print("[1] Abrir nova ordem")
-    print("[2] Listar ordens abertas")
-    print("[3] Atualizar status da ordem")
-    print("[4] Verificar SLA")
-    print("[0] Voltar")
+    print("\n--- MANAGE SERVICE ORDERS ---")
+    print("[1] Open new order")
+    print("[2] List open orders")
+    print("[3] Update order status")
+    print("[4] Check SLA")
+    print("[0] Back")
 
 
 def exibir_menu_historico():
-    """Exibe o submenu de histórico."""
-    print("\n--- HISTÓRICO E ESTATÍSTICAS ---")
-    print("[1] Histórico completo")
-    print("[2] Histórico por computador")
-    print("[3] Estatísticas gerais")
-    print("[4] Alertas de SLA")
-    print("[0] Voltar")
+    print("\n--- HISTORY AND STATISTICS ---")
+    print("[1] Full history")
+    print("[2] History by computer")
+    print("[3] General statistics")
+    print("[4] SLA alerts")
+    print("[0] Back")
 
 
 def main():
-    """Função principal do sistema."""
-    # Carrega os dados
     computadores = carregar_computadores()
     ordens = carregar_ordens()
     
     while True:
         exibir_menu_principal()
-        opcao = input("Digite sua opção: ")
+        opcao = input("Enter your option: ")
         
-        # Opção 1: Gerenciar Computadores
         if opcao == "1":
             while True:
                 exibir_menu_computadores()
-                sub_opcao = input("Digite sua opção: ")
+                sub_opcao = input("Enter your option: ")
                 
                 if sub_opcao == "1":
                     computadores = cadastrar_computador(computadores)
@@ -77,13 +67,12 @@ def main():
                 elif sub_opcao == "0":
                     break
                 else:
-                    print("Opção inválida!")
+                    print("Invalid option!")
         
-        # Opção 2: Gerenciar Ordens
         elif opcao == "2":
             while True:
                 exibir_menu_ordens()
-                sub_opcao = input("Digite sua opção: ")
+                sub_opcao = input("Enter your option: ")
                 
                 if sub_opcao == "1":
                     ordens = criar_ordem(ordens, computadores)
@@ -96,13 +85,12 @@ def main():
                 elif sub_opcao == "0":
                     break
                 else:
-                    print("Opção inválida!")
+                    print("Invalid option!")
         
-        # Opção 3: Histórico
         elif opcao == "3":
             while True:
                 exibir_menu_historico()
-                sub_opcao = input("Digite sua opção: ")
+                sub_opcao = input("Enter your option: ")
                 
                 if sub_opcao == "1":
                     exibir_historico_completo(ordens)
@@ -115,17 +103,17 @@ def main():
                 elif sub_opcao == "0":
                     break
                 else:
-                    print("Opção inválida!")
+                    print("Invalid option!")
         
-        # Opção 0: Sair
         elif opcao == "0":
-            print("\nSalvando dados e encerrando o sistema...")
+            print("\nSaving data and closing the system...")
             salvar_computadores(computadores)
             salvar_ordens(ordens)
-            print("Até mais!")
+            print("Goodbye!")
             break
         
         else:
-            print("Opção inválida!")
+            print("Invalid option!")
+
 
 main()
