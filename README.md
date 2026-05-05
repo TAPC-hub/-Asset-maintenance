@@ -44,16 +44,16 @@ The lack of a centralized system makes it difficult to control the inventory of 
 manutencao_ativos_ti/
 │
 ├── dados/
-│   ├── computadores.json         # Inventário de computadores
-│   └── ordens_servico.json       # Ordens de serviço
+│   ├── computadores.json         # Computer inventory
+│   └── ordens_servico.json       # Service orders
 │
 ├── src/
 │   ├── __init__.py
-│   ├── main.py                   # Menu principal
-│   ├── computadores.py           # Gestão de computadores
-│   ├── ordens.py                 # Gestão de ordens de serviço
-│   ├── historico.py              # Histórico e estatísticas
-│   └── utils.py                  # Funções utilitárias
+│   ├── main.py                   # Main menu
+│   ├── computadores.py           # Computer management
+│   ├── ordens.py                 # Service order management
+│   ├── historico.py              # History and statistics
+│   └── utils.py                  # Utility functions
 │
 └── README.md
 ```
