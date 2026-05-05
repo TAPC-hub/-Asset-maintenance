@@ -75,7 +75,7 @@ manutencao_ativos_ti/
 #### Instalação
 1. Baixe ou clone o projeto  
 ```bash
-git clone https://github.com/TAPC/-Asset-maintenance
+git clone https://github.com/TAPC-hub/-Asset-maintenance
 ```
 
 2. Crie a estrutura de pastas  
