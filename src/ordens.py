@@ -1,107 +1,116 @@
-# Módulo para gerenciar as ordens de serviço de manutenção
 from utils import obter_data_atual, salvar_dados, carregar_dados
 from datetime import datetime, timedelta
 from computadores import buscar_computador_id, salvar_computadores
 
-ARQUIVO_ORDENS = "ordem_servico.json" #Constante que define o nome do arquivo JSON onde as ordens de serviço serão salvas
+ARQUIVO_ORDENS = "ordem_servico.json"
 
-def carregar_ordens(): #Função para carregar as ordens de serviço do arquivo JSON
-    return carregar_dados(ARQUIVO_ORDENS) #Chama a função carregar_dados do arquivo utils.py, passando o nome do arquivo JSON onde as ordens de serviço estão salvas, e retorna os dados carregados
-def salvar_ordens(lista_ordens): #Função para salvar as ordens de serviço no arquivo JSON
-    return salvar_dados(lista_ordens, ARQUIVO_ORDENS) #Chama a função salvar_dados do arquivo utils.py, passando a lista de ordens de serviço e o nome do arquivo JSON onde as ordens de serviço devem ser salvas, e retorna o resultado da operação de salvamento
+def carregar_ordens():
+    return carregar_dados(ARQUIVO_ORDENS)
 
-def gerar_novo_id_os(lista_ordens): #Função para gerar um novo ID para uma ordem de serviço
-    if not lista_ordens: #Verifica se a lista de ordens de serviço está vazia
-        return 1 #Se estiver vazia, retorna 1 como o primeiro ID
+def salvar_ordens(lista_ordens):
+    return salvar_dados(lista_ordens, ARQUIVO_ORDENS)
+
+def gerar_novo_id_os(lista_ordens):
+    if not lista_ordens:
+        return 1
     else:
-        ids = [ordem["id_os"] for ordem in lista_ordens] #Cria uma lista de IDs das ordens de serviço existentes
-        return max(ids) + 1 #Retorna o próximo ID disponível, que é o máximo ID existente mais 1
+        ids = [ordem["id_os"] for ordem in lista_ordens]
+        return max(ids) + 1
     
-def calcular_sla(prioridade): #Função para calcular o prazo de atendimento com base na prioridade da ordem de serviço
-    data_atual = datetime.now() #Obtém a data e hora atual
-    if prioridade == "Crítica":
+def calcular_sla(prioridade):
+    data_atual = datetime.now()
+    if prioridade == "Critical":
         dias = 1
-    elif prioridade == "Alta":
+    elif prioridade == "High":
         dias = 2
-    elif prioridade == "Média":
+    elif prioridade == "Medium":
         dias = 5
-    else:  # Baixa
+    else:
         dias = 10
     
-    data_sla = data_atual + timedelta(days=dias) #Calcula a data de SLA adicionando os dias correspondentes à data atual
-    return data_sla.strftime("%Y-%m-%d") #Retorna a data de SLA formatada como string no formato "YYYY-MM-DD"
+    data_sla = data_atual + timedelta(days=dias)
+    return data_sla.strftime("%Y-%m-%d")
 
-def criar_ordem(lista_ordens, lista_computadores): #Cria uma ordem de serviço vinculada ao computador
+def criar_ordem(lista_ordens, lista_computadores):
     print("\n" + "="*50)
-    print("🔧 ABRIR NOVA ORDEM DE SERVIÇO")
+    print("🔧 OPEN NEW SERVICE ORDER")
     print("="*50)
 
-    if not lista_computadores: #Verifica se a lista de computadores está vazia
-        print("Nenhum computador cadastrado. Cadastre um computador antes de abrir uma ordem de serviço.")
+    if not lista_computadores:
+        print("No computers registered. Register one before creating a service order.")
         return lista_ordens
-        print("\n📋 COMPUTADORES DISPONÍVEIS:")
+
+    print("\n📋 AVAILABLE COMPUTERS:")
     print("-"*50)
     for comp in lista_computadores:
-        print(f"ID: {comp['id']} | Nome: {comp['nome']} | Status: {comp['status']}")
+        print(f"ID: {comp['id']} | Name: {comp['nome']} | Status: {comp['status']}")
     print("-"*50)
 
-    try: 
-        id_computador = int(input("Digite o ID do computador: ")) #Solicita ao usuário que digite o ID do computador com problema e armazena na variável id_computador
-
-    except ValueError: #Trata o erro caso o usuário digite um valor que não seja um número inteiro
-        print("ID inválido. Por favor, digite um número inteiro.")
+    try:
+        id_computador = int(input("Enter computer ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter a number.")
         return lista_ordens
-    computador = buscar_computador_id(lista_computadores, id_computador) #Busca o computador correspondente ao ID digitado usando a função buscar_computador_id do arquivo computadores.py
-    if not computador: #Verifica se o computador foi encontrado
-        print(f"Computador com ID {id_computador} não encontrado.")
-        return lista_ordens
-    print(f"Computador selecionado: {computador['nome']} (Status: {computador['status']})") #Exibe o nome e status do computador selecionado
 
-    print("\n--- DADOS DA ORDEM DE SERVIÇO ---")
+    computador = buscar_computador_id(lista_computadores, id_computador)
+
+    if not computador:
+        print(f"Computer with ID {id_computador} not found.")
+        return lista_ordens
+
+    print(f"Selected computer: {computador['nome']} (Status: {computador['status']})")
+
+    print("\n--- SERVICE ORDER DETAILS ---")
     
-    print("\nTipos de manutenção:")
+    print("\nMaintenance types:")
     print("1 - Hardware")
     print("2 - Software")
-    print("3 - Rede")
-    print("4 - Limpeza")
-    tipo_opcao = input("\nEscolha o tipo (1-4): ")
+    print("3 - Network")
+    print("4 - Cleaning")
+
+    tipo_opcao = input("\nChoose type (1-4): ")
+
     if tipo_opcao == "1":
         tipo_manutencao = "Hardware"
     elif tipo_opcao == "2":
         tipo_manutencao = "Software"
     elif tipo_opcao == "3":
-        tipo_manutencao = "Rede"
+        tipo_manutencao = "Network"
     elif tipo_opcao == "4":
-        tipo_manutencao = "Limpeza"
+        tipo_manutencao = "Cleaning"
     else:
-        print("❌ Tipo inválido!")
+        print("❌ Invalid type!")
         return lista_ordens
-    descricao = input("Descrição do problema/serviço: ") #Solicita ao usuário que digite a descrição do problema/serviço e armazena na variável descricao
-    print("\nPrioridades:")
-    print("1 - Baixa (10 dias para conclusão)")
-    print("2 - Média (5 dias para conclusão)")
-    print("3 - Alta (2 dias para conclusão)")
-    print("4 - Crítica (1 dia para conclusão)")
-    prioridade_opcao = input("\nEscolha a prioridade (1-4): ") 
+
+    descricao = input("Problem/service description: ")
+
+    print("\nPriorities:")
+    print("1 - Low (10 days)")
+    print("2 - Medium (5 days)")
+    print("3 - High (2 days)")
+    print("4 - Critical (1 day)")
+
+    prioridade_opcao = input("\nChoose priority (1-4): ")
+
     if prioridade_opcao == "1":
-        prioridade = "Baixa"
+        prioridade = "Low"
     elif prioridade_opcao == "2":
-        prioridade = "Média"
+        prioridade = "Medium"
     elif prioridade_opcao == "3":
-        prioridade = "Alta"
+        prioridade = "High"
     elif prioridade_opcao == "4":
-        prioridade = "Crítica"
+        prioridade = "Critical"
     else:
-        print("❌ Prioridade inválida!")
+        print("❌ Invalid priority!")
         return lista_ordens
     
-    tecnico = input("Nome do técnico responsável: ")
+    tecnico = input("Technician name: ")
     if not tecnico:
-        tecnico = "A definir"
+        tecnico = "To be assigned"
 
-    novo_id = gerar_novo_id_os(lista_ordens) #Gera um novo ID para a ordem de serviço usando a função gerar_novo_id_os
-    data_atual = obter_data_atual() #Obtém a data e hora atual usando a função obter_data_atual do arquivo utils.py
-    sla_previsto = calcular_sla(prioridade) #Calcula o prazo de atendimento com base na prioridade usando a função calcular_sla
+    novo_id = gerar_novo_id_os(lista_ordens)
+    data_atual = obter_data_atual()
+    sla_previsto = calcular_sla(prioridade)
 
     nova_ordem = {
         "id_os": novo_id,
@@ -113,70 +122,72 @@ def criar_ordem(lista_ordens, lista_computadores): #Cria uma ordem de serviço v
         "tecnico_responsavel": tecnico,
         "data_abertura": data_atual,
         "data_conclusao": None,
-        "status": "Aberta",
+        "status": "Open",
         "sla_previsto": sla_previsto,
         "solucao_aplicada": None
     }
 
-    lista_ordens.append(nova_ordem) #Adiciona a nova ordem de serviço à lista de ordens
-    salvar_ordens(lista_ordens) #Salva a lista de ordens de serviço atualizada no arquivo JSON usando a função salvar_ordens
-    computador["status"] = "Em Manutenção"
+    lista_ordens.append(nova_ordem)
+    salvar_ordens(lista_ordens)
+
+    computador["status"] = "Under Maintenance"
     salvar_computadores(lista_computadores)
+
     print("\n" + "="*50)
-    print(f"✅ ORDEM DE SERVIÇO ABERTA COM SUCESSO!")
-    print(f"   Nº OS: {novo_id}")
-    print(f"   Computador: {computador['nome']}")
-    print(f"   Prioridade: {prioridade}")
-    print(f"   SLA Previsto: {sla_previsto}")
+    print("✅ SERVICE ORDER CREATED SUCCESSFULLY!")
+    print(f"   OS ID: {novo_id}")
+    print(f"   Computer: {computador['nome']}")
+    print(f"   Priority: {prioridade}")
+    print(f"   SLA: {sla_previsto}")
     print("="*50)
     
     return lista_ordens
 
 def listar_ordens_abertas(lista_ordens, lista_computadores=None):
-    """Lista todas as ordens de serviço com status Aberta ou Em Andamento"""
     if not lista_ordens:
-        print("\nNenhuma ordem de serviço cadastrada!")
+        print("\nNo service orders registered!")
         return
     
-    # Filtra ordens abertas
     ordens_abertas = []
     for os in lista_ordens:
-        if os["status"] in ["Aberta", "Em Andamento"]:
+        if os["status"] in ["Open", "In Progress"]:
             ordens_abertas.append(os)
     
     if not ordens_abertas:
-        print("\nNenhuma ordem de serviço aberta ou em andamento!")
+        print("\nNo open or in-progress orders!")
         return
 
     print("\n" + "="*100)
-    print("🔧 ORDENS DE SERVIÇO ABERTAS")
+    print("🔧 OPEN SERVICE ORDERS")
     print("="*100)
-    print(f"{'OS':<6} {'Computador':<25} {'Tipo':<12} {'Prioridade':<10} {'Técnico':<15} {'SLA':<12} {'Status':<12}")
+    print(f"{'OS':<6} {'Computer':<25} {'Type':<12} {'Priority':<10} {'Technician':<15} {'SLA':<12} {'Status':<12}")
     print("-"*100)
     
-    # CORRIGIDO: Adicionado o loop para imprimir as ordens
     for os in ordens_abertas:
         print(f"{os['id_os']:<6} {os['nome_computador']:<25} {os['tipo_manutencao']:<12} "
               f"{os['prioridade']:<10} {os['tecnico_responsavel']:<15} {os['sla_previsto']:<12} "
               f"{os['status']:<12}")
     
     print("="*100)
-    print(f"Total de ordens abertas: {len(ordens_abertas)}")
-def atualizar_status_ordem(lista_ordens, lista_computadores): #Função para atualizar o status de uma ordem de serviço
+    print(f"Total open orders: {len(ordens_abertas)}")
+
+def atualizar_status_ordem(lista_ordens, lista_computadores):
     if not lista_ordens:
-        print("\nNenhuma ordem de serviço cadastrada")
+        print("\nNo service orders registered")
         return lista_ordens
 
     print("\n" + "="*50)
-    print("ATUALIZAR STATUS DA ORDEM DE SERVIÇO")
+    print("UPDATE SERVICE ORDER STATUS")
     print("="*50)
 
-    listar_ordens_abertas(lista_ordens) #Chama a função listar_ordens_abertas para exibir as ordens de serviço abertas e permitir a escolha da ordem de serviço para atualização
+    listar_ordens_abertas(lista_ordens)
+
     try:
-        id_os = int(input("Digite o ID da ordem de serviço: ")) #Solicita ao usuário que digite o ID da ordem de serviço e armazena na variável id_os
-    except ValueError: #Trata o erro caso o usuário digite um valor que não seja um número inteiro
-        print("ID inválido. Por favor, digite um número inteiro.")
+        id_os = int(input("Enter service order ID: "))
+    except ValueError:
+        print("Invalid ID. Please enter a number.")
         return lista_ordens
+
     ordem = None
     for os in lista_ordens:
         if os["id_os"] == id_os:
@@ -184,56 +195,55 @@ def atualizar_status_ordem(lista_ordens, lista_computadores): #Função para atu
             break
 
     if not ordem:
-        print(f"Ordem de serviço {id_os} não encontrada!")
+        print(f"Service order {id_os} not found!")
         return lista_ordens
 
-    print(f"\nOrdem selecionada: OS {ordem['id_os']} - {ordem['nome_computador']}")
-    print(f"Status atual: {ordem['status']}")
+    print(f"\nSelected order: OS {ordem['id_os']} - {ordem['nome_computador']}")
+    print(f"Current status: {ordem['status']}")
 
-    print("\nOpções de status:")
-    print("1 - Em Andamento")
-    print("2 - Concluída")
-    print("3 - Cancelada")
+    print("\nStatus options:")
+    print("1 - In Progress")
+    print("2 - Concluded")
+    print("3 - Cancelled")
     
-    opcao = input("\nEscolha o novo status (1-3): ")
+    opcao = input("\nChoose new status (1-3): ")
     
     if opcao == "1":
-        ordem["status"] = "Em Andamento"
-        print(f"\nOS {id_os} atualizada para: Em Andamento")
+        ordem["status"] = "In Progress"
+        print(f"\nOS {id_os} updated to: In Progress")
     elif opcao == "2":
-        solucao = input("Descreva a solução aplicada: ")
-        ordem["status"] = "Concluída"
+        solucao = input("Describe the solution: ")
+        ordem["status"] = "Concluded"
         ordem["data_conclusao"] = obter_data_atual()
         ordem["solucao_aplicada"] = solucao
         
-
         computador = buscar_computador_id(lista_computadores, ordem["id_computador"])
         if computador:
-            computador["status"] = "Operacional"
+            computador["status"] = "Operational"
             computador["ultima_manutencao"] = obter_data_atual()
             salvar_computadores(lista_computadores)
         
-        print(f"\nOS {id_os} concluída com sucesso!")
+        print(f"\nOS {id_os} successfully completed!")
     elif opcao == "3":
-        ordem["status"] = "Cancelada"
+        ordem["status"] = "Cancelled"
         ordem["data_conclusao"] = obter_data_atual()
+
         computador = buscar_computador_id(lista_computadores, ordem["id_computador"])
-        if computador and computador["status"] == "Em Manutenção":
-            computador["status"] = "Operacional"
+        if computador and computador["status"] == "Under Maintenance":
+            computador["status"] = "Operational"
             salvar_computadores(lista_computadores)
         
-        print(f"\nOS {id_os} cancelada!")
+        print(f"\nOS {id_os} cancelled!")
     else:
-        print("Opção inválida!")
+        print("Invalid option!")
         return lista_ordens
     
-    salvar_ordens(lista_ordens) #Salva a lista de ordens de serviço atualizada no arquivo JSON usando a função salvar_ordens
+    salvar_ordens(lista_ordens)
     return lista_ordens
 
 def verificar_sla_atraso(lista_ordens):
-    """Verifica e exibe ordens de serviço com SLA vencido ou próximo do vencimento."""
     if not lista_ordens:
-        print("\n⚠️ Nenhuma ordem de serviço cadastrada!")
+        print("\n⚠️ No service orders registered!")
         return
     
     hoje = datetime.now().date()
@@ -242,7 +252,7 @@ def verificar_sla_atraso(lista_ordens):
     ordens_proximas = []
     
     for os in lista_ordens:
-        if os["status"] in ["Aberta", "Em Andamento"]:
+        if os["status"] in ["Open", "In Progress"]:
             sla_date = datetime.strptime(os["sla_previsto"], "%Y-%m-%d").date()
             dias_restantes = (sla_date - hoje).days
             
@@ -252,23 +262,23 @@ def verificar_sla_atraso(lista_ordens):
                 ordens_proximas.append((os, dias_restantes))
     
     print("\n" + "="*60)
-    print("ALERTAS DE SLA")
+    print("SLA ALERTS")
     print("="*60)
     
     if ordens_atrasadas:
-        print("\nORDENS ATRASADAS:")
+        print("\nOVERDUE ORDERS:")
         print("-"*50)
         for os, dias in ordens_atrasadas:
-            print(f"OS {os['id_os']} - {os['nome_computador']} | Atraso: {dias} dias")
+            print(f"OS {os['id_os']} - {os['nome_computador']} | Delay: {dias} days")
     else:
-        print("\nNenhuma ordem atrasada!")
+        print("\nNo overdue orders!")
     
     if ordens_proximas:
-        print("\nORDENS PRÓXIMAS DO VENCIMENTO (2 dias ou menos):")
+        print("\nNEAR DEADLINE (2 days or less):")
         print("-"*50)
         for os, dias in ordens_proximas:
-            print(f"OS {os['id_os']} - {os['nome_computador']} | {dias} dias restantes")
+            print(f"OS {os['id_os']} - {os['nome_computador']} | {dias} days remaining")
     else:
-        print("\nNenhuma ordem próxima do vencimento!")
+        print("\nNo upcoming deadlines!")
     
     print("="*60)
