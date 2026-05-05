@@ -1,50 +1,44 @@
-## Sistema de Gerenciamento de Manutenção de Ativos de TI
+# IT Asset Maintenance Management System
 
 ---
 
-### 📋 Descrição do Projeto
- 
-Sistema desktop desenvolvido em Python puro para gerenciamento de manutenção de ativos de tecnologia da informação (computadores). O sistema permite o cadastro de equipamentos, abertura e acompanhamento de ordens de serviço, controle de status dos computadores, monitoramento de prazos de atendimento (SLA) e consulta ao histórico completo de manutenções realizadas.
+### 📋 Project Description
 
-O projeto foi desenvolvido como trabalho acadêmico, com o objetivo de aplicar e demonstrar conceitos fundamentais de programação em Python, organização modular, persistência de dados em arquivos JSON e aplicação de regras de negócio.
+Desktop system developed in pure Python for managing maintenance of information technology assets (computers). The system allows the registration of equipment, opening and tracking service orders, controlling computer status, monitoring service level agreement (SLA) deadlines, and accessing the complete maintenance history.
+
+The project was developed as an academic assignment, aiming to apply and demonstrate fundamental Python programming concepts, modular organization, data persistence using JSON files, and the application of business rules.
 
 ---
 
-### Variáveis Relevantes
+### Relevant Variables
 
 | Variável | Tipo | Descrição |
-|---------|------|------------|
-| id | Inteiro | Identificador único do computador |
-| nome | String | Nome do equipamento |
-| tipo | String | Tipo do computador (Desktop, Notebook ou All-in-One) |
-| modelo | String | Modelo do equipamento |
-| processador | String | Processador instalado |
-| memoria_ram | String | Quantidade de memória RAM |
-| armazenamento | String | Capacidade de armazenamento |
-| sistema_operacional | String | Sistema operacional instalado |
-| localizacao | String | Local físico do equipamento |
-| departamento | String | Departamento responsável |
-| status | String | Situação atual do computador |
-| data_cadastro | String | Data e hora de cadastro |
-| ultima_manutencao | String | Data da última manutenção |
+|---------|------|-----------|
+| id | Integer | Unique identifier of the computer |
+| nome | String | Equipment name |
+| tipo | String | Computer type (Desktop, Notebook, or All‑in‑One) |
+| modelo | String | Equipment model |
+| processador | String | Installed processor |
+| memoria_ram | String | Amount of RAM memory |
+| armazenamento | String | Storage capacity |
+| sistema_operacional | String | Installed operating system |
+| localizacao | String | Physical location of the equipment |
+| departamento | String | Responsible department |
+| status | String | Current computer status |
+| data_cadastro | String | Registration date and time |
+| ultima_manutencao | String | Date of the last maintenance |
 
 ---
 
-### Contexto e Problema
- 
-**Contexto**: Empresas e instituições possuem diversos computadores distribuídos entre setores e departamentos, que necessitam de manutenção preventiva e corretiva para garantir a continuidade das atividades.
+### Context and Problem
 
-**Problema a Resolver**: A falta de um sistema centralizado dificulta o controle do inventário de computadores, o acompanhamento das ordens de serviço, o cumprimento dos prazos de atendimento e a manutenção de um histórico confiável de manutenções.
+Companies and institutions have several computers distributed across departments and sectors, requiring preventive and corrective maintenance to ensure continuity of operations.
 
-**Aplicação Prática**:
-- Controle de inventário de ativos de TI
-- Registro e acompanhamento de manutenções
-- Monitoramento de prazos de atendimento (SLA)
-- Histórico para análise de problemas recorrentes
+The lack of a centralized system makes it difficult to control the inventory of computers, track service orders, comply with service deadlines, and maintain a reliable maintenance history.
 
 ---
 
-### 🏗️ Arquitetura do Sistema
+### 🏗️ System Architecture
 
 ```
 manutencao_ativos_ti/
@@ -66,66 +60,66 @@ manutencao_ativos_ti/
 
 ---
 
-### 🚀 Instalação e Configuração
+### 🚀 Installation and Setup
 
-#### Requisitos
-- Python 3.8 ou superior
-- Windows, Linux ou macOS
+#### Requirements
+- Python 3.8 or higher  
+- Windows, Linux, or macOS  
 
-#### Instalação
-1. Baixe ou clone o projeto  
+#### Installation
+1. Clone the repository
 ```bash
 git clone https://github.com/TAPC-hub/-Asset-maintenance
 ```
 
-2. Crie a estrutura de pastas  
+2. Create the folder structure
 ```bash
 mkdir dados src
 ```
 
-3. Execute o sistema  
+3. Run the system
 ```bash
 cd src
 python main.py
 ```
 
-O sistema utiliza apenas bibliotecas padrão do Python, não sendo necessária a instalação de dependências adicionais.
+The system uses only Python standard libraries; no additional dependencies are required.
 
 ---
 
-### 📖 Como Usar
+### 📖 How to Use
 
-Execute o sistema via terminal:
+Run the system via terminal:
 ```bash
 python main.py
 ```
 
-O sistema apresenta um menu interativo com as seguintes seções:
+The system displays an interactive menu with the following sections:
 
-#### 1️⃣ Gerenciar Computadores
-- Cadastrar computador
-- Listar computadores
-- Atualizar status
-- Deletar computador
+#### 1️⃣ Manage Computers
+- Register computer
+- List computers
+- Update status
+- Delete computer
 
-#### 2️⃣ Gerenciar Ordens de Serviço
-- Abrir nova ordem de serviço
-- Atualizar status da ordem
-- Verificar prazos de SLA
+#### 2️⃣ Manage Service Orders
+- Open a new service order
+- Update service order status
+- Check SLA deadlines
 
-#### 3️⃣ Histórico e Estatísticas
-- Histórico completo de manutenções
-- Histórico por computador
-- Estatísticas gerais
-- Alertas de SLA
+#### 3️⃣ History and Statistics
+- Complete maintenance history
+- Maintenance history by computer
+- General statistics
+- SLA alerts
 
 ---
 
-### 🧮 Modelagem do Problema
+### 🧮 Problem Modeling
 
-#### Definição Formal
+#### Formal Definition
 
-**Estrutura do Computador**
+**Computer Structure**
 ```python
 {
   "id": int,
@@ -144,7 +138,7 @@ O sistema apresenta um menu interativo com as seguintes seções:
 }
 ```
 
-**Estrutura da Ordem de Serviço**
+**Service Order Structure**
 ```python
 {
   "id_os": int,
@@ -164,71 +158,72 @@ O sistema apresenta um menu interativo com as seguintes seções:
 
 ---
 
-### 📈 Métricas de Execução
+### 📈 Execution Metrics
+The system automatically records:
 
-O sistema registra automaticamente:
-- Total de computadores cadastrados
-- Total de ordens de serviço
-- Ordens abertas e concluídas
-- Distribuição por tipo de manutenção
-- Distribuição por prioridade
-- Alertas de SLA
-
----
-
-### 🧪 Testes
-
-Os testes são realizados manualmente por meio das funcionalidades do sistema:
-- Cadastro com validação de dados
-- Abertura de OS apenas para computadores existentes
-- Atualização correta de status
-- Persistência em arquivos JSON
-- Carregamento automático de dados na inicialização
+- Total number of registered computers
+- Total number of service orders
+- Open and completed service orders
+- Distribution by maintenance type
+- Distribution by priority
+- SLA alerts
 
 ---
 
-### 📊 Análise de Sensibilidade
+### 🧪 Testing
+Testing is performed manually through system features:
 
-- Testes com diferentes prioridades de ordens
-- Verificação do impacto no SLA
-- Testes completos do fluxo de status das ordens
-- Análise de consistência do histórico
+- Registrations with data validation
+- Service orders opened only for existing computers
+- Correct status updates
+- JSON file persistence
+- Automatic data loading during startup
+
+---
+
+### 📊 Sensitivity Analysis
+
+- Tests with different service order priorities
+- SLA impact analysis
+- Complete testing of service order status flow
+- Maintenance history consistency analysis
 
 ---
 
 ### 🔍 Validação e Comparação
 
-| Funcionalidade | Processo Manual | Sistema Proposto |
+| Feature | Manual Process | Proposed System |
 |--------------|----------------|------------------|
-| Controle de equipamentos | ❌ | ✅ |
-| Controle de SLA | ❌ | ✅ |
-| Histórico de manutenções | ❌ | ✅ |
-| Estatísticas | ❌ | ✅ |
+| Equipment control | ❌ | ✅ |
+| SLA control | ❌ | ✅ |
+| Maintenance history | ❌ | ✅ |
+| Statistics | ❌ | ✅ |
 
 ---
 
-### 📝 Decisões de Pré-processamento
+### 📝 Preprocessing Decisions
 
-- Validação dos dados de entrada
-- Padronização de textos e datas
-- Geração automática de identificadores
-- Persistência separada por tipo de dado
-- Salvamento automático após cada operação
-
----
-
-### 🎯 Resultados Esperados
-
-- Organização e controle de ativos de TI
-- Redução de falhas e retrabalho
-- Cumprimento de prazos de manutenção
-- Histórico confiável para auditoria
-- Suporte à tomada de decisões
+- Input data validation
+- Text and date standardization
+- Automatic identifier generation
+- Data persistence separated by type
+- Automatic saving after each operation
 
 ---
 
-### 👥 Autores
+### 🎯  Expected Results
+
+- Organized control of IT assets
+- Reduction of failures and rework
+- Compliance with maintenance deadlines
+- Reliable historical data for audits
+- Support for decision-making
+
+---
+
+### 👥 Authors
+
 Thiago Augusto Pini Ceccoti  
 
-Desenvolvido como trabalho acadêmico – 2026
-``
+Developed as an academic project – 2026
+```
