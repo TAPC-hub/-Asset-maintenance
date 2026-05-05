@@ -1,44 +1,44 @@
-from utils import obter_data_atual, carregar_dados, salvar_dados #importando as funções obter_data_atual, carregar_dados e salvar_dados do arquivo utils.py
+from utils import obter_data_atual, carregar_dados, salvar_dados
 
-ARQUIVO_COMPUTADORES = "computadores.json" #constante que salva Arquivo onde os dados dos computadores serão salvos
+ARQUIVO_COMPUTADORES = "computadores.json"
 
-def carregar_computadores(): #Função para carregar os dados dos computadores do arquivo JSON
-    return carregar_dados(ARQUIVO_COMPUTADORES) #Chama a função carregar_dados do arquivo utils.py, passando o nome do arquivo JSON onde os dados dos computadores estão salvos, e retorna os dados carregados
+def carregar_computadores():
+    return carregar_dados(ARQUIVO_COMPUTADORES)
 
-def salvar_computadores(lista_computadores): #Função para salvar os dados dos computadores no arquivo JSON
-    return salvar_dados(lista_computadores, ARQUIVO_COMPUTADORES) #Chama a função salvar_dados do arquivo utils.py, passando a lista de computadores e o nome do arquivo JSON onde os dados dos computadores devem ser salvos, e retorna o resultado da operação de salvamento
+def salvar_computadores(lista_computadores):
+    return salvar_dados(lista_computadores, ARQUIVO_COMPUTADORES)
 
-def gerar_novo_id(lista_computadores): #Função para gerar um novo ID para um computador
-    if not lista_computadores: #Verifica se a lista de computadores está vazia
-        return 1 #Se estiver vazia, retorna 1 como o primeiro ID
+def gerar_novo_id(lista_computadores):
+    if not lista_computadores:
+        return 1
     else:
-        ids = [computador["id"] for computador in lista_computadores] #Cria uma lista de IDs dos computadores existentes
-        return max(ids) + 1 #Retorna o próximo ID disponível, que é o máximo ID existente mais 1
+        ids = [computador["id"] for computador in lista_computadores]
+        return max(ids) + 1
 
 def buscar_computador_id(lista_computadores, id_computador):
-    for computador in lista_computadores: #Percorre a lista de computadores
-        if computador["id"] == id_computador: #Verifica se o ID do computador atual é igual ao ID buscado
-            return computador #Se for igual, retorna o computador encontrado
+    for computador in lista_computadores:
+        if computador["id"] == id_computador:
+            return computador
     return None
 
-def cadastrar_computador(lista_computadores): #Cadastra novo computador no sistema
-    print("\n" + "="*50) #Estilização visual para separar as seções do programa
-    print("📝 CADASTRO DE NOVO COMPUTADOR")#Estilização visual para separar as seções do programa
-    print("="*50)#Estilização visual para separar as seções do programa
+def cadastrar_computador(lista_computadores):
+    print("\n" + "="*50)
+    print("📝 REGISTER NEW COMPUTER")
+    print("="*50)
 
-    nome = input("Digite o nome do computador: ").strip() #Solicita ao usuário que digite o nome do computador e armazena na variável nome
-    tipo = input("Tipo (Desktop/Notebook/All-in-One): ").strip() #Solicita o tipo da maquina
-    modelo = input("Modelo (ex: Dell OptiPlex 3080): ").strip() #Solicita o modelo da maquina
-    processador = input("Processador (ex: Intel Core i5-10400): ").strip() #Solicita o Processador
-    memoria_ram = input("Memória RAM (ex: 8GB, 16GB): ").strip() #Solicita a quantidade de memória RAM
-    armazenamento = input("Armazenamento (ex: 256GB SSD, 1TB HD): ").strip() #Solicita a capacidade de armazenamento
-    sistema_operacional = input("Sistema Operacional (ex: Windows 11 Pro): ").strip() #Solicita o sistema operacional instalado
-    localizacao = input("Localização (ex: Laboratório - Sala 201): ").strip()  #Solicita a localização do computador
-    departamento = input("Departamento (ex: TI, Administrativo): ").strip() #Solicita o departamento responsável pelo computador
+    nome = input("Enter computer name: ").strip()
+    tipo = input("Type (Desktop/Notebook/All-in-One): ").strip()
+    modelo = input("Model (e.g., Dell OptiPlex 3080): ").strip()
+    processador = input("Processor (e.g., Intel Core i5-10400): ").strip()
+    memoria_ram = input("RAM (e.g., 8GB, 16GB): ").strip()
+    armazenamento = input("Storage (e.g., 256GB SSD, 1TB HD): ").strip()
+    sistema_operacional = input("Operating System (e.g., Windows 11 Pro): ").strip()
+    localizacao = input("Location (e.g., Lab - Room 201): ").strip()
+    departamento = input("Department (e.g., IT, Administrative): ").strip()
 
-    novo_id = gerar_novo_id(lista_computadores) #Gera um novo ID para o computador usando a função gerar_novo_id
+    novo_id = gerar_novo_id(lista_computadores)
 
-    novo_computador = { #Cria um dicionário com os dados do novo computador
+    novo_computador = {
         "id": novo_id,
         "nome": nome,
         "tipo": tipo,
@@ -49,161 +49,164 @@ def cadastrar_computador(lista_computadores): #Cadastra novo computador no siste
         "sistema_operacional": sistema_operacional,
         "localizacao": localizacao,
         "departamento": departamento,
-        "status": "Operacional",
+        "status": "Operational",
         "data_cadastro": obter_data_atual(),
         "ultima_manutencao": None
     }
 
-    lista_computadores.append(novo_computador) #Adiciona o novo computador a lista de computadores
-    salvar_computadores(lista_computadores) #Salva a lista de computadores atualizada no arquivo JSON usando a função salvar_computadores
+    lista_computadores.append(novo_computador)
+    salvar_computadores(lista_computadores)
+
     print("\n" + "="*50)
-    print(f"✅ COMPUTADOR CADASTRADO COM SUCESSO!")
+    print("✅ COMPUTER REGISTERED SUCCESSFULLY!")
     print(f"   ID: {novo_id}")
-    print(f"   Nome: {nome}")
+    print(f"   Name: {nome}")
     print("="*50)
     
     return lista_computadores
 
 def deletar_computador(lista_computadores):
-    """Remove um computador do sistema."""
     if not lista_computadores:
-        print("\nNenhum computador cadastrado ainda!")
+        print("\nNo computers registered yet!")
         return lista_computadores
     
     print("\n" + "="*50)
-    print("DELETAR COMPUTADOR")
+    print("DELETE COMPUTER")
     print("="*50)
     
-    # Lista computadores de forma resumida
-    print("\nCOMPUTADORES CADASTRADOS:")
+    print("\nREGISTERED COMPUTERS:")
     print("-"*50)
     for comp in lista_computadores:
-        print(f"ID: {comp['id']} | Nome: {comp['nome']} | Status: {comp['status']}")
+        print(f"ID: {comp['id']} | Name: {comp['nome']} | Status: {comp['status']}")
     print("-"*50)
     
     try:
-        id_busca = int(input("\nDigite o ID do computador a deletar: "))
+        id_busca = int(input("\nEnter the computer ID to delete: "))
     except ValueError:
-        print("ID inválido!")
+        print("Invalid ID!")
         return lista_computadores
     
-    # Busca o computador
     computador = buscar_computador_id(lista_computadores, id_busca)
     
     if not computador:
-        print(f"Computador com ID {id_busca} não encontrado!")
+        print(f"Computer with ID {id_busca} not found!")
         return lista_computadores
     
-    # Confirmação antes de deletar
-    print(f"\nATENÇÃO: Você está prestes a deletar:")
+    print(f"\nWARNING: You are about to delete:")
     print(f"   ID: {computador['id']}")
-    print(f"   Nome: {computador['nome']}")
-    print(f"   Localização: {computador['localizacao']}")
+    print(f"   Name: {computador['nome']}")
+    print(f"   Location: {computador['localizacao']}")
     
-    confirmacao = input("\nTem certeza? Digite 'SIM' para confirmar: ").strip().upper()
+    confirmacao = input("\nAre you sure? Type 'YES' to confirm: ").strip().upper()
     
-    if confirmacao == "SIM":
+    if confirmacao == "YES":
         lista_computadores.remove(computador)
         salvar_computadores(lista_computadores)
-        print(f"\n✅ Computador {computador['nome']} deletado com sucesso!")
+        print(f"\n✅ Computer {computador['nome']} deleted successfully!")
     else:
-        print("\n❌ Operação cancelada!")
+        print("\n❌ Operation cancelled!")
     
     return lista_computadores
-def listar_computadores(lista_computadores): #Função para listar os computadores cadastrados no sistema
-    if not lista_computadores: #Verifica se a lista de computadores está vazia
-        print("\n Não há cadastro de computadores!")
-        return
-    print("\n" + "="*100)
-    print("📋 INVENTÁRIO DE COMPUTADORES")
-    print("="*100)
-    print(f"{'ID':<5} {'Nome':<25} {'Modelo':<20} {'Status':<15} {'Localização':<20}") #Cabeçalho da tabela com formatação para alinhar as colunas, usando f-string para formatar a string e os especificadores de formatação para definir a largura de cada coluna e o alinhamento dos dados (esquerda, direita ou centralizado)
-    print("-"*100)
-    for comp in lista_computadores: #Percorre a lista de computadores
-                print(f"{comp['id']:<5} {comp['nome']:<25} {comp['modelo']:<20} {comp['status']:<15} {comp['localizacao']:<20}")
 
-    print("="*100)
-    print(f"Total de computadores cadastrados: {len(lista_computadores)}")
-
-def listar_computadores_resumido(lista_computadores): #Função para listar os computadores cadastrados no sistema
-    """Lista computadores de forma resumida (ID, Nome, Status)."""
+def listar_computadores(lista_computadores):
     if not lista_computadores:
-        print("⚠️ Nenhum computador cadastrado!")
+        print("\nNo computers registered!")
+        return
+
+    print("\n" + "="*100)
+    print("📋 COMPUTER INVENTORY")
+    print("="*100)
+    print(f"{'ID':<5} {'Name':<25} {'Model':<20} {'Status':<15} {'Location':<20}")
+    print("-"*100)
+
+    for comp in lista_computadores:
+        print(f"{comp['id']:<5} {comp['nome']:<25} {comp['modelo']:<20} {comp['status']:<15} {comp['localizacao']:<20}")
+
+    print("="*100)
+    print(f"Total computers: {len(lista_computadores)}")
+
+def listar_computadores_resumido(lista_computadores):
+    if not lista_computadores:
+        print("⚠️ No computers registered!")
         return
     
     print("\n" + "-"*60)
-    print(f"{'ID':<5} {'Nome':<25} {'Status':<15}")
+    print(f"{'ID':<5} {'Name':<25} {'Status':<15}")
     print("-"*60)
     
-    for comp in lista_computadores: #Percorre a lista de computadores
+    for comp in lista_computadores:
         print(f"{comp['id']:<5} {comp['nome']:<25} {comp['status']:<15}")
     
     print("-"*60)
 
 def exibir_detalhes_computador(computador):
-    """Exibe os detalhes de um computador específico."""
     print("\n" + "="*60)
-    print(f"💻 DETALHES DO COMPUTADOR - ID: {computador['id']}")
+    print(f"💻 COMPUTER DETAILS - ID: {computador['id']}")
     print("="*60)
-    # REMOVA a linha do Patrimônio
-    print(f"Nome:              {computador['nome']}")
-    print(f"Tipo:              {computador['tipo']}")
-    print(f"Modelo:            {computador['modelo']}")
-    print(f"Processador:       {computador['processador']}")
-    print(f"Memória RAM:       {computador['memoria_ram']}")
-    print(f"Armazenamento:     {computador['armazenamento']}")
-    print(f"Sistema Operacional: {computador['sistema_operacional']}")
-    print(f"Localização:       {computador['localizacao']}")
-    print(f"Departamento:      {computador['departamento']}")
+    print(f"Name:              {computador['nome']}")
+    print(f"Type:              {computador['tipo']}")
+    print(f"Model:             {computador['modelo']}")
+    print(f"Processor:         {computador['processador']}")
+    print(f"RAM:               {computador['memoria_ram']}")
+    print(f"Storage:           {computador['armazenamento']}")
+    print(f"Operating System:  {computador['sistema_operacional']}")
+    print(f"Location:          {computador['localizacao']}")
+    print(f"Department:        {computador['departamento']}")
     print(f"Status:            {computador['status']}")
-    print(f"Data Cadastro:     {computador['data_cadastro']}")
-    print(f"Última Manutenção: {computador['ultima_manutencao'] or 'Nenhuma'}")
+    print(f"Registration Date: {computador['data_cadastro']}")
+    print(f"Last Maintenance:  {computador['ultima_manutencao'] or 'None'}")
     print("="*60)
-def atualizar_status_computador(lista_computadores): #Função para atualizar o status de um computador específico, recebendo a lista de computadores como parâmetro
 
-    if not lista_computadores: #
-        print("\n Nenhum computador cadastrado ainda!")
+def atualizar_status_computador(lista_computadores):
+    if not lista_computadores:
+        print("\nNo computers registered yet!")
         return lista_computadores
     
     print("\n" + "="*50)
-    print("🔄 ATUALIZAR STATUS DO COMPUTADOR")
+    print("🔄 UPDATE COMPUTER STATUS")
     print("="*50)
 
-    listar_computadores_resumido(lista_computadores) #Chama a função listar_computadores_resumido para exibir a lista de computadores de forma resumida, facilitando a escolha do computador para atualização
+    listar_computadores_resumido(lista_computadores)
 
     try:
-        id_busca = int(input ("\nDigite o ID do computador que deseja atualizar o status: ").strip()) #Solicita ao usuário que digite o ID do computador que deseja atualizar o status e armazena na variável id_busca
-    except ValueError: #Trata o erro caso o usuário digite um valor que não seja um número inteiro
-        print("ID inválido! Por favor, digite um número inteiro.")
+        id_busca = int(input("\nEnter the computer ID to update: ").strip())
+    except ValueError:
+        print("Invalid ID! Please enter a number.")
         return lista_computadores
-    computador = buscar_computador_id(lista_computadores, id_busca) #Chama a função buscar_computador_id para encontrar o computador com o ID digitado pelo usuário e armazena na variável computador
-    if not computador: #Verifica se o computador foi encontrado
-        print(f"Computador com ID {id_busca} não encontrado!")
+
+    computador = buscar_computador_id(lista_computadores, id_busca)
+
+    if not computador:
+        print(f"Computer with ID {id_busca} not found!")
         return lista_computadores
-    print(f"\nComputador selecionado: {computador['nome']} (ID: {computador['id']})") #Exibe o nome e ID do computador selecionado para atualização
-    print("Status atual: ", computador['status']) #Exibe o status atual do computador
-    print("\nOpções de status:")
-    print("1 - Operacional")
-    print("2 - Em Manutenção")
-    print("3 - Inativo")
-    opcao =input("Digite o número correspondente ao novo status: ").strip() #Solicita ao usuário que digite o número correspondente ao novo status e armazena na variável opcao
+
+    print(f"\nSelected computer: {computador['nome']} (ID: {computador['id']})")
+    print("Current status:", computador['status'])
+
+    print("\nStatus options:")
+    print("1 - Operational")
+    print("2 - Under Maintenance")
+    print("3 - Inactive")
+
+    opcao = input("Enter the number for the new status: ").strip()
+
     if opcao == "1":
-        novo_status = "Operacional"
+        novo_status = "Operational"
     elif opcao == "2":
-        novo_status = "Em Manutenção"
+        novo_status = "Under Maintenance"
     elif opcao == "3":
-        novo_status = "Inativo"
+        novo_status = "Inactive"
     else:
-        print("❌ Opção inválida!")
+        print("❌ Invalid option!")
         return lista_computadores
     
-    computador["status"] = novo_status #Atualiza o status do computador com o novo status selecionado pelo usuário
-    if novo_status == "Em Manutenção": #Se o novo status for "Em Manutenção", atualiza a data da última manutenção para a data atual usando a função obter_data_atual
-        computador["ultima_manutencao"] = obter_data_atual() #Atualiza a data da última manutenção para a data atual usando a função obter_data_atual do arquivo utils.py
-    salvar_computadores(lista_computadores) #Salva a lista de computadores atualizada no arquivo JSON usando a função salvar_computadores
-    print(f"\nStatus do computador '{computador['nome']}' atualizado para '{novo_status}' com sucesso!")
+    computador["status"] = novo_status
+
+    if novo_status == "Under Maintenance":
+        computador["ultima_manutencao"] = obter_data_atual()
+
+    salvar_computadores(lista_computadores)
+
+    print(f"\nStatus of computer '{computador['nome']}' updated to '{novo_status}' successfully!")
 
     return lista_computadores
-
-
-    
