@@ -69,7 +69,7 @@ manutencao_ativos_ti/
 #### Installation
 1. Clone the repository
 ```bash
-git clone https://github.com/TAPC-hub/-Asset-maintenance
+git clone https://github.com/TAPC-hub/Asset-maintenance
 ```
 
 2. Create the folder structure
